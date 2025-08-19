@@ -1,11 +1,10 @@
 package spentenergy
 
 import (
-	"fmt"
+	"errors"
 	"time"
 )
 
-// Основные константы, необходимые для расчетов.
 const (
 	mInKm                      = 1000 // количество метров в километре.
 	minInH                     = 60   // количество минут в часе.
@@ -15,16 +14,16 @@ const (
 
 func WalkingSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
 	if steps <= 0 {
-		return 0, fmt.Errorf("количество шагов должно быть больше 0")
+		return 0, errors.New("steps should be positive")
 	}
 	if weight <= 0 {
-		return 0, fmt.Errorf("вес должен быть больше 0")
+		return 0, errors.New("weight should be positive")
 	}
 	if height <= 0 {
-		return 0, fmt.Errorf("рост должен быть больше 0")
+		return 0, errors.New("height should be positive")
 	}
 	if duration <= 0 {
-		return 0, fmt.Errorf("продолжительность должна быть больше 0")
+		return 0, errors.New("duration should be positive")
 	}
 
 	speed := MeanSpeed(steps, height, duration)
@@ -40,16 +39,16 @@ func WalkingSpentCalories(steps int, weight, height float64, duration time.Durat
 
 func RunningSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
 	if steps <= 0 {
-		return 0, fmt.Errorf("количество шагов должно быть больше 0")
+		return 0, errors.New("steps should be positive")
 	}
 	if weight <= 0 {
-		return 0, fmt.Errorf("вес должен быть больше 0")
+		return 0, errors.New("weight should be positive")
 	}
 	if height <= 0 {
-		return 0, fmt.Errorf("рост должен быть больше 0")
+		return 0, errors.New("height should be positive")
 	}
 	if duration <= 0 {
-		return 0, fmt.Errorf("продолжительность должна быть больше 0")
+		return 0, errors.New("duration should be positive")
 	}
 
 	speed := MeanSpeed(steps, height, duration)
