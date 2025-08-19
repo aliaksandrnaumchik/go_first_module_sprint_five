@@ -1,6 +1,7 @@
 package trainings
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -22,16 +23,16 @@ func (t *Training) Parse(datastring string) (err error) {
 	parts := strings.Split(datastring, ",")
 
 	if len(parts) != 3 {
-		return fmt.Errorf("неверный формат данных: ожидается 3 части, получено %d", len(parts))
+		return fmt.Errorf("wrong datastring format: should be 3 parts, but now %d", len(parts))
 	}
 
 	stepsStr := strings.TrimSpace(parts[0])
 	steps, err := strconv.Atoi(stepsStr)
 	if err != nil {
-		return fmt.Errorf("ошибка при парсинге количества шагов: %w", err)
+		return fmt.Errorf("convert steps to int error: %w", err)
 	}
 	if steps <= 0 {
-		return fmt.Errorf("количество шагов должно быть положительным")
+		return errors.New("step count sould be positive")
 	}
 	t.Steps = steps
 
@@ -41,10 +42,10 @@ func (t *Training) Parse(datastring string) (err error) {
 	durationStr := strings.TrimSpace(parts[2])
 	duration, err := time.ParseDuration(durationStr)
 	if err != nil {
-		return fmt.Errorf("ошибка при парсинге длительности: %w", err)
+		return fmt.Errorf("error during parse duration: %w", err)
 	}
 	if duration <= 0 {
-		return fmt.Errorf("продолжительность должна быть положительной")
+		return errors.New("duration should be positive")
 	}
 	t.Duration = duration
 
@@ -75,7 +76,7 @@ func (t Training) ActionInfo() (string, error) {
 			return "", errCalories
 		}
 	default:
-		return "", fmt.Errorf("неизвестный тип тренировки: %s", t.TrainingType)
+		return "", fmt.Errorf("unknown training type: %s", t.TrainingType)
 	}
 
 	result := fmt.Sprintf(

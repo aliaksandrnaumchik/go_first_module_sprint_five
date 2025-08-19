@@ -21,26 +21,26 @@ func (ds *DaySteps) Parse(datastring string) (err error) {
 	parts := strings.Split(datastring, ",")
 
 	if len(parts) != 2 {
-		return errors.New("неверный формат данных: ожидается 2 части, разделённые запятой")
+		return errors.New("wrong datastring format: should be 2 parts divided by comma")
 	}
 
 	steps, err := strconv.Atoi(parts[0])
 	if err != nil {
-		return fmt.Errorf("ошибка при конвертации шагов: %w", err)
+		return fmt.Errorf("convert steps to int error: %w", err)
 	}
 
 	if steps <= 0 {
-		return errors.New("количество шагов должно быть положительным числом")
+		return errors.New("step count sould be positive")
 	}
 	ds.Steps = steps
 
 	duration, err := time.ParseDuration(parts[1])
 	if err != nil {
-		return fmt.Errorf("ошибка при конвертации шагов: %w", err)
+		return fmt.Errorf("error during parse duration: %w", err)
 	}
 
 	if duration <= 0 {
-		return errors.New("продолжительность должна быть положительной")
+		return errors.New("duration should be positive")
 	}
 	ds.Duration = duration
 
@@ -52,7 +52,7 @@ func (ds DaySteps) ActionInfo() (string, error) {
 
 	calories, err := spentenergy.WalkingSpentCalories(ds.Steps, ds.Weight, ds.Height, ds.Duration)
 	if err != nil {
-		return "", errors.New("ошибка при расчёте калорий")
+		return "", errors.New("error during calories calculation")
 	}
 
 	info := fmt.Sprintf(
